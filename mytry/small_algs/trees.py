@@ -128,5 +128,60 @@ class BST:
         current = self
         while current.left is not None:
             current = current.left
-        return current.value    
+        return current.value   
 
+###################################################################################
+##recursively
+
+def findClosestValueInBst(tree, target):
+    return findClosestValueInBstHelper(tree, target, closest=float("inf"))
+
+
+def findClosestValueInBstHelper(tree, target, closest):
+    if tree is None:
+        return closest
+    if abs(target - closest)> abs(target - tree.value):
+        closest =tree.value
+    if target < tree.value:
+        return findClosestValueInBstHelper(tree.left, target, closest)
+    elif target > tree.value:
+        return findClosestValueInBstHelper(tree.right, target, closest)
+    else:
+        return closest            
+
+
+# This is the class of the input tree. Do not edit.
+class BST:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+###########################################################################
+## iteratively
+def findClosestValueInBst(tree, target):
+    return findClosestValueInBstHelper(tree, target, closest=float("inf"))
+
+
+def findClosestValueInBstHelper(tree, target, closest):
+    current = tree
+    while current is not None:
+        if tree is None:
+            return closest
+        if abs(target - closest)> abs(target - current.value):
+            closest =current.value
+        if target < current.value:
+            current = current.left
+        elif target > tree.value:
+            current = current.right
+        else:
+            break
+    return closest            
+
+
+# This is the class of the input tree. Do not edit.
+class BST:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
