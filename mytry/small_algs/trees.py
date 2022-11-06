@@ -185,3 +185,141 @@ class BST:
         self.value = value
         self.left = None
         self.right = None
+
+###################################################################
+## This is an input class. Do not edit.
+
+class BST:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+
+def validateBst(tree):
+    return validateBstHelper(tree, float("-inf"), float("inf"))
+
+def validateBstHelper(tree, min, max):
+    if tree is None:
+            return True
+    if tree.value and tree.value < min or tree.value >= max:
+        return False
+    leftValid = validateBstHelper(tree.left, min, tree.value)
+    return leftValid and validateBstHelper(tree.right, tree.value, max)
+
+
+###################################################################
+
+def inOrderTraverse(tree, array):
+    if tree is None:
+        return array
+    inOrderTraverse(tree.left, array)
+    array.append(tree.value)
+    inOrderTraverse(tree.right, array)
+    return array    
+
+def preOrderTraverse(tree, array):
+    if tree is None:
+        return array
+    array.append(tree.value)
+    preOrderTraverse(tree.left, array)
+    preOrderTraverse(tree.right, array)
+    return array     
+
+
+def postOrderTraverse(tree, array):
+    if tree is None:
+        return array
+    postOrderTraverse(tree.left, array)
+    postOrderTraverse(tree.right, array)
+    array.append(tree.value)
+    return array
+
+
+ ##############################################################   
+def minHeightBst(array):
+    return minHeightBstHelper(array, None,0,len(array)-1)
+
+def minHeightBstHelper(array, bst, start, end):
+    if start > end:
+        return
+    mid = (start+end)//2
+    addVal = array[mid]
+    if bst is None:
+        bst=BST(addVal)
+    else:        
+        bst.insert(addVal)
+    minHeightBstHelper(array, bst, start, mid - 1)
+    minHeightBstHelper(array, bst, mid +1, end)
+
+    return bst
+
+
+class BST:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+    def insert(self, value):
+        if value < self.value:
+            if self.left is None:
+                self.left = BST(value)
+            else:
+                self.left.insert(value)
+        else:
+            if self.right is None:
+                self.right = BST(value)
+            else:
+                self.right.insert(value)
+
+def minHeightBst(array):
+    return minHeightBstHelper(array, None,0,len(array)-1)
+
+def minHeightBstHelper(array, bst, start, end):
+    if start > end:
+        return
+    mid = (start+end)//2
+    addVal = array[mid]
+    if bst is None:
+        bst=BST(addVal)
+    else:        
+        bst.insert(addVal)
+    minHeightBstHelper(array, bst, start, mid - 1)
+    minHeightBstHelper(array, bst, mid +1, end)
+
+    return bst
+
+###################################################################
+def minHeightBst(array):
+    return minHeightBstHelper(array, None,0,len(array)-1)
+
+def minHeightBstHelper(array, bst, start, end):
+    if start > end:
+        return
+    mid = (start+end)//2
+    newNode = BST(array[mid])
+    if bst is None:
+        bst = newNode
+    else:
+        if array[mid] < bst.value:
+            bst.left = newNode
+            bst = bst.left  
+        else :
+            bst.right = newNode
+            bst = bst.right     
+    minHeightBstHelper(array, bst, start, mid - 1)
+    minHeightBstHelper(array, bst, mid +1, end)
+
+    return bst
+
+
+class BST:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+        
+
+
+        
