@@ -319,7 +319,32 @@ class BST:
         self.value = value
         self.left = None
         self.right = None
-        
+
+########################################################################
+class BinaryTree:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+
+def branchSums(root):
+    sums=[]
+    calculateBranchSums(root,0,sums)
+    return sums
+
+
+def calculateBranchSums(node,sum, sums):
+    if node is None:
+        return 
+    newSum = sum +node.value
+    if node.left is None and node.right is None:
+        sums.append(newSum)
+        return
+
+    calculateBranchSums(node.left, newSum,sums)
+    calculateBranchSums(node.right,newSum, sums)    
+
 
 
         

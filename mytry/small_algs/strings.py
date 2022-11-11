@@ -1,4 +1,7 @@
 #O(n) time O(n) space
+from turtle import st
+
+
 def caesarCipherEncryptor(string, key):
     newLetters =[]
     newKey = key %26
@@ -68,5 +71,32 @@ def firstNonRepeatingCharacter(string):
             return i
     return -1            
 
-#    
+#######################################################################
+def longestPalindromicSubstring(string):
+    polindrome = [0,0] ##I am assuming it can be a case I do not have any polindrom in the string 
+    for i in range(1,len(string)):
+        odd = getLongestPolindromFrom(string, i-1, i+1)
+        even = getLongestPolindromFrom(string, i-1, i)
+        longest = max(odd,even, key=lambda x :x[1]-x[0])
+        polindrome = max(longest, polindrome, key = lambda x:x[1]-x[0])
 
+    return string[polindrome[0]:polindrome[1]+1]    
+
+def getLongestPolindromFrom(string, leftI, rightI):
+    while leftI>=0 and rightI<len(string):
+        if string[leftI]!=string[rightI]:
+            break
+        leftI -= 1
+        rightI+=1
+    return [leftI+1, rightI-1]    
+
+#######################################################################
+def groupAnagrams(words):
+    res = {}
+    for word in words:
+        word_sorted = "".join(sorted(word))
+        if word_sorted in res:
+            res[word_sorted].append(word)
+        else:
+            res[word_sorted] = [word] 
+    return list(res.values())           
