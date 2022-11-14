@@ -374,4 +374,53 @@ class BinaryTree:
         self.left = None
         self.right = None
 
-        
+
+###################################################################
+# This is an input class. Do not edit.
+class BST:
+    def __init__(self, value, left=None, right=None):
+        self.value = value
+        self.left = left
+        self.right = right
+
+class TreeInfo:
+    def __init__(self, visited, value):
+        self.visited = visited
+        self.value = value
+
+def findKthLargestValueInBst(tree, k):
+    treeInfo = TreeInfo(0, -1)
+    revInOrder(tree,k, treeInfo)
+    return treeInfo.value
+
+def revInOrder(node,k, treeInfo):
+    if node == None or treeInfo.value >k:
+        return
+    revInOrder(node.right,k,treeInfo) 
+    if treeInfo.visited < k:
+        treeInfo.visited +=1
+        treeInfo.value = node.value
+        revInOrder(node.left,k, treeInfo)
+
+
+ ########################################################################
+# This is an input class. Do not edit.
+class BST:
+    def __init__(self, value, left=None, right=None):
+        self.value = value
+        self.left = left
+        self.right = right
+
+
+def findKthLargestValueInBst(tree, k):
+    sortedVal=[]
+    inOrderTraverse(tree, sortedVal)
+    return sortedVal[len(sortedVal)-k]
+
+
+def inOrderTraverse(node, sortedVal):
+    if node ==None:
+        return
+    inOrderTraverse(node.left, sortedVal)
+    sortedVal.append(node.value)
+    inOrderTraverse(node.right, sortedVal)    

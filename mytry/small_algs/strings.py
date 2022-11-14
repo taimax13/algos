@@ -99,4 +99,54 @@ def groupAnagrams(words):
             res[word_sorted].append(word)
         else:
             res[word_sorted] = [word] 
-    return list(res.values())           
+    return list(res.values())  
+
+#######################################################################
+###valid ip address -> validate length -> validate substring
+#min(len(string) - to avoid index error
+def validIPAddresses(string):
+    res =[]
+    for i in range(1,min(len(string),4)):
+        current = ['','','','']
+        current[0] = string[:i]
+        if not validateStr(current[0]): continue
+        for j in range(i +1, i+min(len(string)-i, 4)):
+            current[1] = string[i:j]
+            if not validateStr(current[1]):continue
+            for k in range(j+1, j+min(len(string)-j,4)):
+                current[2] = string[j:k]
+                current[3] = string[k:]
+                if  validateStr(current[2]) and validateStr(current[3]): res.append('.'.join(current))
+
+    return res
+
+def validateStr(string):
+    str_int = int(string)
+    return len(string) == len(str(str_int)) if str_int <= 255  else False
+
+#print(validIPAddresses("00010")) 
+
+#######################################################################
+def reverseWordsInString(string):
+    res=[]
+    start_W=0
+    for i in range(len(string)):
+        ch = string[i]
+        if ch == " ": 
+            res.append(string[start_W:i])
+            start_W = i
+        elif string[start_W] == " ":   
+            res.append(" ")
+            start_W = i 
+    res.append(string[start_W:])
+    reverseList(res)
+    return "".join(res)
+
+def reverseList(list):
+    start, end =0 , len(list)-1
+    while start<end:
+        list[start], list[end]=list[end], list[start]
+        start +=1
+        end -=1
+
+
