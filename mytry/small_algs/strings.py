@@ -149,4 +149,34 @@ def reverseList(list):
         start +=1
         end -=1
 
+#######################################################################
+def minimumCharactersForWords(words):
+    res={}
+    for word in words:
+        char_occur_times = numberOcureTimes(word)
+        updateRes(char_occur_times, res)
+    return generate_array(res)
 
+def numberOcureTimes(string):
+    res = {}
+    for char in string:
+        if char not in res:
+            res[char] = 0
+        res[char] +=1
+    return res        
+
+def updateRes(char_occur_times, res):
+    for char in char_occur_times:
+        occur_times =  char_occur_times[char]
+        if char in res:
+            res[char]=max(occur_times, res[char])
+        else:
+            res[char] = occur_times    
+
+def generate_array(res):
+    chars=[]
+    for char in res:
+        occur=res[char]
+        for _ in range(occur):
+            chars.append(char)
+    return chars        
