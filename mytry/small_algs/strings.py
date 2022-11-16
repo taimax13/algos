@@ -180,3 +180,137 @@ def generate_array(res):
         for _ in range(occur):
             chars.append(char)
     return chars        
+#################################################################
+
+def longestSubstringWithoutDuplication(string):
+    res = [0,1]
+    startInd = 0
+    lastPosition = {}
+    for i ,char, in enumerate(string):
+        if char in lastPosition:
+            startInd = max(startInd, lastPosition[char]+1)
+        if res[1]-res[0]< i+1 -startInd:
+            res = [startInd, i+1]
+        lastPosition[char] = i
+    return string[res[0]:res[1]]            
+
+################################################################
+def underscorifySubstring(string, substring):
+    ##find location
+    ##find joined loccation - merge in the join array
+    ##add the underscores
+    print(locate(string, substring))
+    locarions = mergeSubstring(locate(string, substring))
+    return underscore(string,locarions)
+
+def locate(string, substring):    
+    locations = []
+    startInd = 0
+    nextInd =0 
+    while startInd < len(string) :
+        nextInd = string.find(substring, startInd)
+        if nextInd == -1:
+            break
+        locations.append([nextInd, nextInd + len(substring)])
+        startInd = nextInd+1
+    
+    return locations        
+
+
+def mergeSubstring(array_substrings):
+    if not len(array_substrings):
+        return array_substrings
+    res =[array_substrings[0]] 
+    prev = array_substrings[0]   
+    for i in range(1, len(array_substrings)):
+        current = array_substrings[i]
+        if current[0] <= prev[1]:
+            prev[1]=current[1]
+        else: 
+            res.append(array_substrings[i]) 
+            prev = current   
+    return res    
+
+
+def underscore(string,locations):
+    locationsInd = 0
+    stringIndex = 0
+    res = []
+    i=0
+    added = False
+    while stringIndex < len(string) and locationsInd < len(locations):
+        if stringIndex == locations[locationsInd][i]:
+            res.append("_")
+            added =not added
+            if not added:
+                locationsInd+=1
+            i = 0  if i==1 else 1  
+        res.append(string[stringIndex])
+        stringIndex += 1
+    if locationsInd < len(locations): res.append("_")
+    elif stringIndex < len(string): res.append(string[stringIndex:])
+    return "".join(res)        
+
+
+#print(underscorifySubstring("testthis is a testtest to see if testestest it works", "test"))
+###############################################################
+def patternMatcher2(pattern, string):
+    res={}
+    res["x"] = string[0]
+    res["y"] = string[1]
+    string=[]
+    for i in range(len(pattern)):
+        string.append(res[pattern[i]])
+    return "".join(string)
+
+#print(patternMatcher("xxyxx", ["go", "do"]))
+
+
+##############################################################
+def patternMatcher(pattern, string):
+    if len(pattern)>len(string):
+        return []
+    current_pattern = getPattern(pattern)
+    switched = current_pattern[0] != pattern[0]
+    pattern_count = {"x": 0 , "y": 0}
+    get_y = getlengthYposition(current_pattern,pattern_count)
+    if pattern_count["y"] !=0:
+        for lenX in range(1,len(string)):
+            lenY = (len(string)-lenX * pattern_count["x"]) / pattern_count["y"]
+            if lenY<=0 or lenY % 1 !=0:
+                continue
+            lenY = int(lenY)
+            yInd = get_y * lenX
+            print(yInd)
+            x = string[:lenX]
+            y = string[yInd:yInd+lenY]
+            pattern_match = map(lambda char: x if char == "x" else y,  current_pattern)
+            if string == "".join(pattern_match):
+                return [x,y] if not switched else [y,x]
+    else: 
+        lenX = len(string) / pattern_count["x"]
+        if lenX % 1 == 0:
+            lenX = int(lenX)
+            x = string[:lenX]
+            pattern_match = map(lambda char: x, current_pattern)
+            return [x, ""] if not switched else ["",x]
+    return []        
+
+
+def getlengthYposition(pattern,pattern_count):
+    firstY = None
+    for i, char in enumerate(pattern):
+        pattern_count[char] += 1
+        if char == 'y' and firstY == None:
+            firstY = i
+    return firstY        
+
+def getPattern(pattern_string):
+    pattern = list(pattern_string)
+    if pattern[0]=="x": 
+        return pattern
+    else:
+        return list(map(lambda char: "x" if char=='y' else 'y', pattern))    
+
+print(patternMatcher("xxyy", "gogototo"))
+
