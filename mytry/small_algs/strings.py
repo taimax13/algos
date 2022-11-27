@@ -312,5 +312,107 @@ def getPattern(pattern_string):
     else:
         return list(map(lambda char: "x" if char=='y' else 'y', pattern))    
 
-print(patternMatcher("xxyy", "gogototo"))
+#print(patternMatcher("xxyy", "gogototo"))
 
+##############################################################
+def smallestSubstringContaining(bigString, smallString):
+    charCounts = getCharCounts(smallString)
+    return getSubstringBounds(bigString, charCounts)
+
+def getSubstringBounds(string, map_chars):
+    res={}
+    targetSubstrLength = len(map_chars.keys())
+    lengthGot = 0
+    leftInd = 0
+    rightInd = 0
+    substrBounds=[0, float("inf")]
+    while rightInd<len(string):
+        rightChar = string[rightInd]
+        if rightChar not in map_chars:
+            rightInd+=1
+            continue
+        increseCount(rightChar, res)
+        if res[rightChar] == map_chars[rightChar]:
+            lengthGot+=1
+        while lengthGot == targetSubstrLength and leftInd<=rightInd:
+            substrBounds=getSortestBound(leftInd, rightInd, substrBounds)
+            leftChar = string[leftInd]
+            if leftChar not in map_chars:
+                leftInd+=1
+                continue
+            if res[leftChar] == map_chars[leftChar]:
+                lengthGot-=1
+            decreaseCount(leftChar,charcounts=res)
+            leftInd+=1
+        rightInd+=1
+    start, end = substrBounds
+    if end == float("inf"):
+        return ""
+
+    return string[start:end+1]
+
+
+
+def getSortestBound(i1,i2,bounds):
+    return [i1,i2] if i2-i1<bounds[1]-bounds[0] else bounds
+def getCharCounts(string):
+    res={}
+    for char in string:
+        increseCount(char, res)
+    return  res
+
+
+
+def increseCount(char, charcounts):
+    if char not in charcounts:
+        charcounts[char]=0
+    charcounts[char]+=1
+
+def decreaseCount(char, charcounts):
+    if char not in charcounts:
+        charcounts[char]=0
+    charcounts[char]-=1
+
+
+#print(smallestSubstringContaining("abcd$ef$axb$c$","$$abf"))
+#############################################################
+
+def longestBalancedSubstring2(string):
+    maxLength=0
+    for i in len(string):
+        for j in range(i+2, len(string) + 1,2):
+            if isBalanced(string[i:j]):
+                currentLength = j-i
+                maxLength = max(maxLength, currentLength)
+    return maxLength
+
+def isBalanced(substring):
+    stack = []
+    for char in substring:
+       if char == "(":
+           stack.append("(")
+       elif len(stack) > 0:
+           stack.pop()
+       else:
+           return False
+    return len(stack)==0
+
+
+###############################################
+def longestBalancedSubstring(string):
+    maxLength = 0
+    indStack = []
+    indStack.append(-1)
+
+    for i in range(len(string)):
+        if string[i]=="(":
+            indStack.append(i)
+        else:
+            indStack.pop()
+            if len(indStack)==0:
+                indStack.append(i)
+            else:
+                balancedIndStart = indStack[len(indStack)-1]
+                current = i - balancedIndStart
+                maxLength=max(maxLength, current)
+    return  maxLength

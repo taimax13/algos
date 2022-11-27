@@ -423,4 +423,57 @@ def inOrderTraverse(node, sortedVal):
         return
     inOrderTraverse(node.left, sortedVal)
     sortedVal.append(node.value)
-    inOrderTraverse(node.right, sortedVal)    
+    inOrderTraverse(node.right, sortedVal)
+
+
+
+######min hip
+# Do not edit the class below except for the buildHeap,
+# siftDown, siftUp, peek, remove, and insert methods.
+# Feel free to add new properties and methods to the class.
+class MinHeap:
+    def __init__(self, array):
+        self.heap = self.buildHeap(array)
+
+    def buildHeap(self, array):
+        parentInd = (len(array)-2) // 2
+        for i in reversed(range(parentInd)):
+            self.siftDown(i,len(array)-1, array)
+        return array
+    def siftDown(self, currentInd, endInd, heap):
+        child1ind = currentInd *2 +1
+        while child1ind <=endInd:
+            child2ind = currentInd*2+2 if currentInd*2+2 <=endInd else -1
+            if child2ind != -1 and heap[child2ind]<heap[child1ind]:
+                indSwap = child1ind
+            else:
+                indSwap = child2ind
+            if heap[indSwap]<heap[currentInd]:
+                self.swap(currentInd, indSwap, heap)
+                currentInd = indSwap
+                child1ind= currentInd *2+1
+            else:
+                break
+
+
+    def siftUp(self, currentInd, heap):
+        parentInd = (currentInd-1)//2
+        while currentInd>0 and heap[currentInd]<heap[parentInd]:
+            self.swap(currentInd, parentInd, heap)
+            currentInd=parentInd
+            parentInd = (currentInd-1)//2
+
+
+    def peek(self):
+        return self.heap[0]
+
+    def remove(self):
+        self.swap(0, len(self.heap)-1, self.heap)
+        removed = self.heap.pop()
+        self.siftDown(0, len(self.heap)-1, self.heap)
+        return removed
+    def insert(self, value):
+        self.heap.append(value)
+        self.siftUp(len(self.heap)-1, self.heap)
+    def swap(self, i,j,heap):
+        heap[i], heap[j] = heap[j], heap[i]
